@@ -3,6 +3,19 @@ var nameInputEl = document.querySelector("#username");
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
 
+var formSubmitHandler = function(event) {
+    event.preventDefault();
+    var username = nameInputEl.value.trim();
+
+    if(username) {
+        getUserRepos(username);
+        
+        nameInputEl.value = "";
+    }
+    else {
+        alert("Please enter a github username");
+    }
+};
 var getUserRepos = function(user) {
     var apiUrl = "https://api.github.com/users/" + user + "/repos";
     fetch(apiUrl)
@@ -20,18 +33,7 @@ var getUserRepos = function(user) {
             alert("Unabled to connect to GitHub");
         });
 };
-var formSubmitHandler = function(event) {
-    event.preventDefault();
-    var username = nameInputEl.value.trim();
 
-    if(username) {
-        getUserRepos(username);
-        nameInputEl.value = "";
-    }
-    else {
-        alert("Please enter a github username");
-    }
-};
 var displayRepos = function(repos, searchTerm) {
     if (repos.length === 0) {
         repoContainerEl.textContent = "No repositories found.";
